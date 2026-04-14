@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traffic Signal System</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Rajdhani (industrial/utilitarian) + Share Tech Mono (techy countdown) -->
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Animated road background -->
+  <div class="road-bg">
+    <div class="lane-line"></div>
+    <div class="lane-line"></div>
+    <div class="lane-line"></div>
+  </div>
+
+  <main class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-icon">🚦</div>
+      <h1 class="title">Traffic<span>Signal</span></h1>
+      <p class="subtitle">Intersection Control System</p>
+    </header>
+
+    <!-- Signal pole + housing -->
+    <section class="signal-wrapper" aria-label="Traffic light signal">
+
+      <!-- Pole -->
+      <div class="pole">
+        <div class="pole-arm"></div>
+        <div class="pole-shaft"></div>
+        <div class="pole-base"></div>
+      </div>
+
+      <!-- Signal housing -->
+      <div class="signal-housing">
+
+        <!-- Visor + light: RED -->
+        <div class="light-slot" id="slot-red">
+          <div class="visor"></div>
+          <div class="light" id="light-red" aria-label="Red light">
+            <div class="inner-glow"></div>
+            <div class="lens-shine"></div>
+          </div>
+        </div>
+
+        <!-- Visor + light: YELLOW -->
+        <div class="light-slot" id="slot-yellow">
+          <div class="visor"></div>
+          <div class="light" id="light-yellow" aria-label="Yellow light">
+            <div class="inner-glow"></div>
+            <div class="lens-shine"></div>
+          </div>
+        </div>
+
+        <!-- Visor + light: GREEN -->
+        <div class="light-slot" id="slot-green">
+          <div class="visor"></div>
+          <div class="light" id="light-green" aria-label="Green light">
+            <div class="inner-glow"></div>
+            <div class="lens-shine"></div>
+          </div>
+        </div>
+
+      </div><!-- /signal-housing -->
+
+    </section><!-- /signal-wrapper -->
+
+    <!-- Status panel -->
+    <section class="status-panel" aria-live="polite">
+      <div class="status-message" id="status-message">STOP</div>
+      <div class="countdown-wrap">
+        <span class="countdown-label">NEXT CHANGE IN</span>
+        <span class="countdown-timer" id="countdown">—</span>
+        <span class="countdown-unit">SEC</span>
+      </div>
+    </section>
+
+    <!-- Control buttons -->
+    <section class="controls" aria-label="Signal controls">
+      <button class="btn btn-start" id="btn-start" onclick="startSignal()">
+        <span class="btn-icon">▶</span> Start
+      </button>
+      <button class="btn btn-stop" id="btn-stop" onclick="stopSignal()" disabled>
+        <span class="btn-icon">⏸</span> Stop
+      </button>
+      <button class="btn btn-reset" id="btn-reset" onclick="resetSignal()">
+        <span class="btn-icon">↺</span> Reset
+      </button>
+    </section>
+
+    <!-- Phase indicator bar -->
+    <section class="phase-bar" aria-label="Signal phase indicators">
+      <div class="phase-item" id="phase-red">
+        <div class="phase-dot red"></div>
+        <span>Red <em>5s</em></span>
+      </div>
+      <div class="phase-arrow">→</div>
+      <div class="phase-item" id="phase-green">
+        <div class="phase-dot green"></div>
+        <span>Green <em>5s</em></span>
+      </div>
+      <div class="phase-arrow">→</div>
+      <div class="phase-item" id="phase-yellow">
+        <div class="phase-dot yellow"></div>
+        <span>Yellow <em>2s</em></span>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

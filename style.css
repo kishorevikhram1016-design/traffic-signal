@@ -1,0 +1,514 @@
+/* ============================================================
+   TRAFFIC SIGNAL SYSTEM — style.css
+   Aesthetic: Industrial / Utilitarian Night Theme
+   Fonts: Rajdhani (display) + Share Tech Mono (data)
+   ============================================================ */
+
+/* ── CSS Variables ── */
+:root {
+  --bg:           #0d0f14;
+  --surface:      #161a22;
+  --surface-2:    #1e2330;
+  --border:       #2a3045;
+  --text:         #c8d0e0;
+  --text-dim:     #5a6278;
+  --housing-bg:   #111318;
+  --housing-edge: #252b38;
+  --pole-color:   #1c2130;
+  --pole-edge:    #2e3650;
+
+  /* Signal colours */
+  --red-dim:    #3a1010;
+  --red-glow:   #ff2a2a;
+  --red-halo:   rgba(255, 42, 42, 0.55);
+  --red-outer:  rgba(255, 42, 42, 0.15);
+
+  --yellow-dim:  #3a2d08;
+  --yellow-glow: #ffcc00;
+  --yellow-halo: rgba(255, 204, 0, 0.55);
+  --yellow-outer:rgba(255, 204, 0, 0.15);
+
+  --green-dim:  #0a2e14;
+  --green-glow: #00e64d;
+  --green-halo: rgba(0, 230, 77, 0.55);
+  --green-outer:rgba(0, 230, 77, 0.15);
+
+  --btn-radius: 6px;
+  --transition: 0.35s ease;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Body & Background ── */
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(30,50,90,0.4) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(255,255,255,0.02) 39px,
+      rgba(255,255,255,0.02) 40px
+    );
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px 60px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Animated Road Background ── */
+.road-bg {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 90px;
+  background: #0a0b0e;
+  border-top: 3px solid #1a1f2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  overflow: hidden;
+  z-index: 0;
+}
+.road-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px, transparent 30px,
+    rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 32px
+  );
+}
+.lane-line {
+  width: 60px;
+  height: 10px;
+  background: #ffcc00;
+  border-radius: 3px;
+  opacity: 0.5;
+  animation: roadMove 1.4s linear infinite;
+}
+.lane-line:nth-child(2) { animation-delay: -0.47s; }
+.lane-line:nth-child(3) { animation-delay: -0.94s; }
+
+@keyframes roadMove {
+  from { transform: translateX(200px); }
+  to   { transform: translateX(-200px); }
+}
+
+/* ── Main Container ── */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+}
+.header-icon {
+  font-size: 2rem;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 0 10px rgba(255,204,0,0.6));
+}
+.title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d8e0f0;
+  line-height: 1;
+}
+.title span {
+  color: #ffcc00;
+  margin-left: 6px;
+}
+.subtitle {
+  font-size: 0.78rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* ── Signal Wrapper (pole + housing positioned together) ── */
+.signal-wrapper {
+  position: relative;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Pole ── */
+.pole {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+}
+.pole-arm {
+  width: 64px;
+  height: 12px;
+  background: linear-gradient(180deg, var(--pole-edge), var(--pole-color));
+  border-radius: 4px 4px 0 0;
+  margin-bottom: -2px;
+  position: relative;
+  top: 8px;
+  left: -14px;
+}
+.pole-shaft {
+  width: 18px;
+  height: 320px;
+  background: linear-gradient(90deg, var(--pole-edge) 0%, var(--pole-color) 40%, var(--pole-edge) 100%);
+  border-radius: 3px;
+}
+.pole-base {
+  width: 48px;
+  height: 16px;
+  background: linear-gradient(180deg, var(--pole-edge), var(--pole-color));
+  border-radius: 4px;
+  margin-top: -2px;
+}
+
+/* ── Signal Housing ── */
+.signal-housing {
+  position: relative;
+  z-index: 1;
+  width: 120px;
+  background: linear-gradient(160deg, var(--housing-edge) 0%, var(--housing-bg) 50%, var(--housing-edge) 100%);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -1px 0 rgba(0,0,0,0.5);
+  margin-bottom: 260px; /* space for pole below */
+}
+/* Rivets on housing */
+.signal-housing::before,
+.signal-housing::after {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  background: radial-gradient(circle at 40% 35%, #3a4460, #1a1f2a);
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+.signal-housing::before { top: 10px; left: 10px; }
+.signal-housing::after  { top: 10px; right: 10px; }
+
+/* ── Light Slots ── */
+.light-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.visor {
+  width: 78px;
+  height: 10px;
+  background: linear-gradient(180deg, #0a0c11 0%, var(--housing-edge) 100%);
+  border-radius: 4px 4px 0 0;
+  border: 1px solid var(--border);
+  border-bottom: none;
+}
+
+/* ── Individual Lights ── */
+.light {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid #0d0f14;
+  position: relative;
+  cursor: default;
+  transition: box-shadow var(--transition), background var(--transition);
+  overflow: hidden;
+}
+/* Lens shine highlight */
+.lens-shine {
+  position: absolute;
+  top: 10px; left: 12px;
+  width: 22px; height: 14px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+  pointer-events: none;
+}
+/* Inner glow overlay */
+.inner-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+/* -- RED light (dim/active) -- */
+#light-red {
+  background: radial-gradient(circle at 50% 50%, #5a1515 0%, var(--red-dim) 100%);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+}
+#light-red.active {
+  background: radial-gradient(circle at 45% 40%, #ff8080 0%, var(--red-glow) 45%, #cc0000 100%);
+  box-shadow:
+    0 0 18px 6px var(--red-halo),
+    0 0 55px 20px var(--red-outer),
+    inset 0 2px 8px rgba(255,180,180,0.3);
+  animation: pulse-red 0.8s ease-in-out infinite alternate;
+}
+#light-red.active .inner-glow {
+  background: radial-gradient(circle, rgba(255,150,150,0.35), transparent 70%);
+  opacity: 1;
+}
+
+/* -- YELLOW light -- */
+#light-yellow {
+  background: radial-gradient(circle at 50% 50%, #4a3a05 0%, var(--yellow-dim) 100%);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+}
+#light-yellow.active {
+  background: radial-gradient(circle at 45% 40%, #fff0a0 0%, var(--yellow-glow) 45%, #cc9900 100%);
+  box-shadow:
+    0 0 18px 6px var(--yellow-halo),
+    0 0 55px 20px var(--yellow-outer),
+    inset 0 2px 8px rgba(255,240,160,0.3);
+  animation: pulse-yellow 0.5s ease-in-out infinite alternate;
+}
+#light-yellow.active .inner-glow {
+  background: radial-gradient(circle, rgba(255,230,100,0.35), transparent 70%);
+  opacity: 1;
+}
+
+/* -- GREEN light -- */
+#light-green {
+  background: radial-gradient(circle at 50% 50%, #0a2e14 0%, var(--green-dim) 100%);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+}
+#light-green.active {
+  background: radial-gradient(circle at 45% 40%, #aaffe0 0%, var(--green-glow) 45%, #009933 100%);
+  box-shadow:
+    0 0 18px 6px var(--green-halo),
+    0 0 55px 20px var(--green-outer),
+    inset 0 2px 8px rgba(150,255,190,0.3);
+  animation: pulse-green 0.8s ease-in-out infinite alternate;
+}
+#light-green.active .inner-glow {
+  background: radial-gradient(circle, rgba(100,255,160,0.35), transparent 70%);
+  opacity: 1;
+}
+
+/* ── Glow Pulse Keyframes ── */
+@keyframes pulse-red {
+  from { box-shadow: 0 0 14px 4px var(--red-halo), 0 0 40px 14px var(--red-outer), inset 0 2px 8px rgba(255,180,180,0.3); }
+  to   { box-shadow: 0 0 26px 10px var(--red-halo), 0 0 70px 28px var(--red-outer), inset 0 2px 8px rgba(255,180,180,0.3); }
+}
+@keyframes pulse-yellow {
+  from { box-shadow: 0 0 14px 4px var(--yellow-halo), 0 0 40px 14px var(--yellow-outer), inset 0 2px 8px rgba(255,240,160,0.3); }
+  to   { box-shadow: 0 0 26px 10px var(--yellow-halo), 0 0 70px 28px var(--yellow-outer), inset 0 2px 8px rgba(255,240,160,0.3); }
+}
+@keyframes pulse-green {
+  from { box-shadow: 0 0 14px 4px var(--green-halo), 0 0 40px 14px var(--green-outer), inset 0 2px 8px rgba(150,255,190,0.3); }
+  to   { box-shadow: 0 0 26px 10px var(--green-halo), 0 0 70px 28px var(--green-outer), inset 0 2px 8px rgba(150,255,190,0.3); }
+}
+
+/* ── Status Panel ── */
+.status-panel {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.status-message {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #e0e8ff;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  min-width: 220px;
+  text-align: center;
+}
+.status-message.state-red    { color: var(--red-glow);    text-shadow: 0 0 20px var(--red-halo); }
+.status-message.state-yellow { color: var(--yellow-glow); text-shadow: 0 0 20px var(--yellow-halo); }
+.status-message.state-green  { color: var(--green-glow);  text-shadow: 0 0 20px var(--green-halo); }
+
+.countdown-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text-dim);
+}
+.countdown-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.countdown-timer {
+  font-size: 2rem;
+  color: var(--text);
+  min-width: 2ch;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+.countdown-unit {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Control Buttons ── */
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px 10px;
+  border: 2px solid var(--border);
+  border-radius: var(--btn-radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: background var(--transition), border-color var(--transition),
+              box-shadow var(--transition), transform 0.1s ease;
+}
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.btn-icon { font-size: 0.85rem; }
+
+.btn-start {
+  border-color: rgba(0,230,77,0.4);
+}
+.btn-start:not(:disabled):hover {
+  background: rgba(0,230,77,0.1);
+  border-color: var(--green-glow);
+  box-shadow: 0 0 14px rgba(0,230,77,0.2);
+  color: var(--green-glow);
+}
+
+.btn-stop {
+  border-color: rgba(255,42,42,0.4);
+}
+.btn-stop:not(:disabled):hover {
+  background: rgba(255,42,42,0.1);
+  border-color: var(--red-glow);
+  box-shadow: 0 0 14px rgba(255,42,42,0.2);
+  color: var(--red-glow);
+}
+
+.btn-reset {
+  border-color: rgba(255,204,0,0.4);
+}
+.btn-reset:not(:disabled):hover {
+  background: rgba(255,204,0,0.1);
+  border-color: var(--yellow-glow);
+  box-shadow: 0 0 14px rgba(255,204,0,0.2);
+  color: var(--yellow-glow);
+}
+
+/* ── Phase Indicator Bar ── */
+.phase-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 20px;
+  width: 100%;
+}
+.phase-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.phase-item.active { opacity: 1; }
+.phase-item em {
+  font-style: normal;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text-dim);
+}
+.phase-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+.phase-dot.red    { background: var(--red-dim);    border-color: var(--red-glow);    }
+.phase-dot.yellow { background: var(--yellow-dim); border-color: var(--yellow-glow); }
+.phase-dot.green  { background: var(--green-dim);  border-color: var(--green-glow);  }
+.phase-item.active .phase-dot.red    { background: var(--red-glow); }
+.phase-item.active .phase-dot.yellow { background: var(--yellow-glow); }
+.phase-item.active .phase-dot.green  { background: var(--green-glow); }
+
+.phase-arrow {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  padding-bottom: 14px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  body { padding: 28px 12px 80px; }
+  .signal-housing { width: 100px; }
+  .light { width: 58px; height: 58px; }
+  .visor { width: 66px; }
+  .title { font-size: 1.9rem; }
+  .status-message { font-size: 2.2rem; }
+  .phase-bar { padding: 10px 12px; gap: 6px; }
+  .phase-item { font-size: 0.7rem; }
+  .btn { font-size: 0.9rem; padding: 10px 8px; min-width: 85px; }
+}
+@media (max-width: 360px) {
+  .signal-housing { width: 90px; }
+  .light { width: 52px; height: 52px; }
+  .visor { width: 60px; }
+}
